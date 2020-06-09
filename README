@@ -1,0 +1,83 @@
+INSTRUCTIONS FOR RUNNING THE CODE
+=================================
+1. A small sample is provided with this package. The full dataset instead is ~15GB in size.
+   If the files are no longer inside ./full_data, the full dataset can be created by:
+
+	cd full_data && ./download_data.sh	
+
+
+2. Move inside the directory test_big_data_project:
+
+	cd test_big_data_project
+
+
+3. Running the batch program has been delegated to the script run.sh. A typical use
+   of this utility would be:
+
+        ./run.sh [--data='sample'|'full'] [--verbose='yes'|'no'] [--version=1|2]
+
+   For more info please do refer to ./run.sh --help command.
+   
+   *) If there is need to run the whole dataset, Spark version 2 is reccomended as the
+   version 1 tends to be interrupted by java.lang.OutOfMemoryError. The sample instead can 
+   be handled by both Spark versions.
+
+
+- LIST OF FILES AND DIRECTORIES
+===============================
+1. ./test_big_data_project/T2016*.CSV - The data files. These are small size samples for
+   testing/demo purposes only. Running the application on these files (~4MB) should take
+   around 5min.
+
+
+2. ./test_big_data_project/run.sh - A shell script whose task is to prepare and run the Spark
+    jobs. This script provides a unified interface and allows to run the job with several
+   parameters:
+   --data : Allows to run the job on either the sample or the whole dataset. It also
+            takes care of copying the data into the HDFS filesystem.
+   --verbose: Allows to chose whether the execution log should be printed on the screen
+              or saved on a file.
+   --version: Allows to run the job with either Spark v1.4.0 or v2.1.0. The latter is
+              recommended whenever user wants to use the entire dataset as it seems to
+	      make better use of the heap memory.
+   Please refer to run.sh --help for an exhaustive guide on its usage.
+
+3. ./test_big_data_project/bnf.py - An auxiliary Python module that contains utilities for
+   parsing BNF codes. The services of this module are called from the main program. However,
+   it is put in an separate module as this code is sequential and its role is auxiliaty to the
+   whole computation.
+
+4. ./test_big_data_project/application.py - The main application for processing big data in
+   batch mode. It is called by run.sh
+
+5. ./test_big_data_project/Analysis.ipynb - The interactive version of the main application used
+   to perform the analysis. It is meant to be opened in a jupyter notebook.
+
+6. ./full_data/download_data.sh - Script to download the full dataset.
+
+7. ./full_data/files.txt - List of the files to be downloaded.
+
+8. ./README - This file.
+
+
+- FILES VISIBLE AFTER FIRST EXECUTION ONLY
+==========================================
+1. sections.json - The results saved after parsing the BNF codes.
+   The decoding of the BNF codes (taken from British National Formulary book).
+
+2. output - The output of the program.
+
+3. out.log - The log file of the execution. Created only if run.sh is run with
+    the attribute --verbose=no
+
+
+
+- OTHER FILES IN MY DIRECTORY ON CLUSTER
+========================================
+1. ~/full_out.log - Execution log showing the execution of the entire dataset.
+   The execution trace of the job run on the entire dataset. Provided as an example
+   given that the execution time tends to be long.
+
+2. ~/full_output - Output of the job run on the entire dataset.
+   Results file, obtained by using the whole dataset.
+
